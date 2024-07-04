@@ -1,0 +1,162 @@
+entities:
+- components:
+  - centre: '[0.00, 0.00]'
+    radius: 80
+    speed: 4
+    type: Orbiter
+  - colour: (40, 80, 220)
+    type: SimpleRender
+  name: Simple Orbiter Blue
+  size: 4.0
+  start_pos: '[0.00, 0.00]'
+  type: Entity
+- components:
+  - centre: '[0.00, 0.00]'
+    radius: 160
+    speed: 1
+    type: Orbiter
+  - colour: (40, 220, 10)
+    type: SimpleRender
+  name: Slow Orbiter Green
+  size: 6.0
+  start_pos: '[0.00, 0.00]'
+  type: Entity
+- components:
+  - colour: (200, 40, 40)
+    type: SimpleRender
+  name: Static red
+  size: 15.0
+  start_pos: '[-10.00, 0.00]'
+  type: Entity
+- components:
+  - speed: 40
+    type: Character
+    variant: axe
+  - job: Lumberjack
+    type: Worker
+    workcentre: First home
+  name: Jack
+  size: 16.0
+  start_pos: '[-110.00, -40.00]'
+  type: Entity
+- components:
+  - speed: 40
+    type: Character
+    variant: pick
+  name: Brad
+  size: 16.0
+  start_pos: '[-110.00, -20.00]'
+  type: Entity
+- components:
+  - depth: 3
+    door_x_pos: 1
+    name: abode
+    storeys: 1
+    type: Building
+    width: 3
+  - inputs:
+    - tree
+    inventory_limit: 10
+    job: Lumberjack
+    products:
+    - lumber
+    type: WorkCentre
+  name: First home
+  size: 128.0
+  start_pos: '[-90.00, -55.00]'
+  type: Entity
+- components:
+  - depth: 2
+    door_x_pos: 3
+    name: abode
+    storeys: 1
+    type: Building
+    width: 5
+  name: Wide home
+  size: 128.0
+  start_pos: '[-60.00, 120.00]'
+  type: Entity
+- components:
+  - depth: 5
+    door_x_pos: 0
+    name: abode
+    storeys: 1
+    type: Building
+    width: 2
+  name: Narrow home
+  size: 128.0
+  start_pos: '[30.00, -60.00]'
+  type: Entity
+- components:
+  - depth: 2
+    door_x_pos: 1
+    name: abode
+    storeys: 3
+    type: Building
+    width: 2
+  name: Tall home
+  size: 128.0
+  start_pos: '[100.00, -120.00]'
+  type: Entity
+- components:
+  - sprite_id: 1bit:tree
+    type: SpriteRender
+  - kind: tree
+    quantity: 3
+    type: WorldResource
+  name: Static tree
+  size: 16.0
+  start_pos: '[5.00, 40.00]'
+  type: Entity
+- components:
+  - sprite_id: 1bit:tree
+    type: SpriteRender
+  - kind: tree
+    quantity: 3
+    type: WorldResource
+  name: Static tree2
+  size: 16.0
+  start_pos: '[60.00, 50.00]'
+  type: Entity
+- components:
+  - sprite_id: 1bit:tree2
+    type: SpriteRender
+  - kind: tree
+    quantity: 3
+    type: WorldResource
+  name: Static tree3
+  size: 16.0
+  start_pos: '[10.00, 55.00]'
+  type: Entity
+- components:
+  - sprite_id: 1bit:tree3
+    type: SpriteRender
+  - kind: tree
+    quantity: 3
+    type: WorldResource
+  name: Static tree4
+  size: 16.0
+  start_pos: '[-70.00, 30.00]'
+  type: Entity
+- components:
+  - roads:
+      long_lane: 30, 160, 400, 160
+      main_street: -70, -35, 150, -35
+      tall_drive: 110, -35, 110, -95
+      wide_lane: 30, -35, 30, 160
+    type: RoadNetwork
+  name: Town roads
+  size: 400.0
+  start_pos: '[0.00, 0.00]'
+  type: Entity
+- components:
+  - centre: '[0.00, 0.00]'
+    radius: 10
+    speed: 10
+    type: Orbiter
+  - sprite_id: 1bit:path_tee
+    type: SpriteRender
+  name: White
+  size: 4.0
+  start_pos: '[0.00, 0.00]'
+  type: Entity

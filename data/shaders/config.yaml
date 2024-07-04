@@ -1,0 +1,22 @@
+shaders:
+  - name: default
+    instanced: False
+    vert: default_v.glsl
+    frag: default_f.glsl
+  - name: textured_lit
+    instanced: False
+    vert: textured_lit_v.glsl
+    frag: textured_lit_f.glsl
+  - name: textured
+    instanced: False
+    vert: textured_v.glsl
+    frag: textured_f.glsl
+  - name: test
+    instanced: False
+    vert: test_v.glsl
+    frag: test_f.glsl
+    #instanced_shader = shader.Shader("data/shaders/instanced_textured_lit_v.glsl","data/shaders/textured_lit_f.glsl")
+  - name: instanced_textured_lit
+    instanced: True
+    vert: instanced_textured_lit_v.glsl
+    frag: textured_lit_f.glsl

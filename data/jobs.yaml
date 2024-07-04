@@ -1,0 +1,160 @@
+jobs:
+  cobbler:
+    tools:
+      blacksmith: hammer, knife
+    materials:
+      blacksmith: nails
+      tanner: leather
+  fisher:
+    tools:
+      weaver: net, string
+      carpenter: rod
+  blacksmith:
+    tools:
+      blacksmith: hammer, anvil
+      stonemason: forge
+    materials:
+      miner: coal, iron-ore
+      carpenter: planks
+  carpenter:
+    tools: hammer, chisel
+    materials:
+      lumberjack: lumber
+  wheelwright:
+    tools: hammer, chisel
+    materials:
+      blacksmith: iron-band
+      carpenter: planks
+  farmer:
+    tools:
+      blacksmith: plough, scythe
+  miller:
+    tools:
+      stonemason: millstone
+    materials:
+      farmer: wheat
+  lumberjack:
+    tools:
+      blacksmith: axe
+  tanner:
+    tools:
+      blacksmith: knife
+      carpenter: barrel
+    materials:
+      butcher: skin
+      merchant: dye, salt
+  weaver:
+    tools:
+      carpenter: loom
+    materials:
+      farmer: wool
+      merchant: dye
+  glassblower:
+    tools:
+      stonemason: kiln
+    materials:
+      miner: silica-sand, coal
+      lumberjack: firewood
+  winemaker:
+    tools:
+      glassblower: bottle
+      carpenter: barrel
+      blacksmith: sickle
+    materials:
+      farmer: fertilizer
+  butcher:
+    tools:
+      blacksmith: knife
+    materials:
+      farmer: pig, sheep, cow
+    products:
+      sausages, pork, lamb, beef, skin, bone, sinew
+  baker:
+    tools:
+      stonemason: oven
+      carpenter: bowls
+    materials:
+      miner: coal
+      lumberjack: firewood
+      farmer: flour
+  cook:
+    tools:
+      stonemason: oven
+      blacksmith: pan
+      potter: pot
+    materials:
+      lumberjack: firewood
+      baker: bread
+      butcher: pork, lamb, beef, sausage
+      herbalist: fruit, herbs
+      merchant: spices
+  stonemason:
+    tools:
+      blacksmith: pickaxe
+  leatherworker:
+    tools:
+      blacksmith: hammer, knife
+    materials:
+      tanner: leather
+      blacksmith: iron
+  merchant:
+    tools:
+      wheelwright: wagon
+      blacksmith: horseshoe
+      weaver: sacks
+  goldsmith:
+    tools:
+      blacksmith: hammer, anvil
+    materials:
+      miner: gold
+  watercarrier:
+    tools:
+      carpenter: bucket
+  herbalist:
+    tools:
+      blacksmith: knife
+  medic:
+    tools:
+      blacksmith: knife
+      herbalist: remedy-herbs
+  miner:
+    tools:
+      blacksmith: pickaxe
+      carpenter: planks
+  hunter:
+    tools:
+      blacksmith: spear, arrowhead
+      carpenter: dowel
+      weaver: thread
+  forester:
+    tools:
+      blacksmith: shovel, axe
+  tailor:
+    tools:
+      blacksmith: scissors
+    materials:
+      tanner: leather
+      weaver: cloth, thread
+      blacksmith: clasps
+  brewer:
+# others
+# hornblower - clock / messages
+# roofer - tiles and fixes
+# locksmith
+# tax collector
+# armourer
+# servant - sweeping up, carrying, menial low skill tasks
+# dyer - incorporated into tanner and weaver
+# hatmaker
+# soldier
+# tinsmith
+# carter / coachman - merchant like, but perhaps add later as the need becomes obvious
+# spurrier
+# birdcatcher
+# painter - only once post-scarcity
+# tavernkeeper - only when we get visitors
+# sadler - not yet
+# messenger - not yet
+# ropemaker
+# farrier - blacksmith already
+# alchemist

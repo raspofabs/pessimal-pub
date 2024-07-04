@@ -1,0 +1,9 @@
+{
+    "en": {
+        "hello_button": "Say generic hello!",
+        "play": "Play",
+        "pause": "Pause",
+        "edit": "Edit",
+        "save": "Save"
+    }
+}

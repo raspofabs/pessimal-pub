@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "pessimal"
+version = "0.1.0"
+description = ""
+authors = ["Richard Fabian <raspo1@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^8.2.2"
+pytest-cov = "^5.0.0"
+jurigged = "^0.5.8"
+pyyaml = "^6.0.1"
+pygame-gui = "^0.6.12"
+python-i18n = "^0.3.9"
+pygame-ce = "^2.5.0"
+pyopengl = "3.1.5"
+imgui = "^2.0.0"
+numpy = "^2.0.0"
+
+[tool.poetry.scripts]
+trustproc = "pessimal.main:run"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
