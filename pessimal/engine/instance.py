@@ -1,3 +1,6 @@
+# pragma: exclude file
+# instance requires OpenGL
+
 from OpenGL.GL import *
 from .math_support import *
 from .model import Model

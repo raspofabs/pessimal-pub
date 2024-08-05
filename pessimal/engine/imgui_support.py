@@ -1,3 +1,6 @@
+# pragma: exclude file
+# this file interacts deeply with imgui, making testing difficult.
+
 from __future__ import absolute_import
 
 from imgui.integrations.opengl import ProgrammablePipelineRenderer

@@ -1,4 +1,5 @@
-from pessimal.component import Component, Field, IntField
+from pessimal.component import Component
+from pessimal.field import Field, IntField
 from pessimal.v2 import V2
 from pessimal.sprite_manager import SpriteManager
 

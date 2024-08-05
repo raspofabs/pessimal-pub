@@ -1,4 +1,5 @@
-from pessimal.component import Component, Field, IntField
+from pessimal.component import Component
+from pessimal.field import Field, IntField
 from pessimal.v2 import V2
 from pessimal.sprite_manager import SpriteManager
 
@@ -9,23 +10,28 @@ class Character(Component):
     fields = [
             Field("variant", None),
             IntField("speed", 40),
+            IntField("rseed", None),
             ]
 
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
         sm = SpriteManager.get_manager()
-        self.body_variant = random.randint(0,2)
-        self.shoes_variant = random.randint(0,7)
-        self.trousers_variant = random.randint(0,7)
+
+        rand_source = random.Random()
+        rand_source.seed(self.rseed)
+
+        self.body_variant = rand_source.randint(0,2)
+        self.shoes_variant = rand_source.randint(0,7)
+        self.trousers_variant = rand_source.randint(0,7)
         if self.shoes_variant > 3:
             self.shoes_variant += 1
         if self.trousers_variant > 3:
             self.trousers_variant += 1
-        self.torso_variant = random.randint(6,17), random.randint(0,9)
-        self.hair_colour = random.randint(0,1) * 4, random.randint(0,2) * 4
-        self.hair_variant1 = 19 + random.randint(0,3) + self.hair_colour[0], random.randint(0,3) + self.hair_colour[1]
-        self.hair_variant2 = 19 + random.randint(0,3) + self.hair_colour[0], random.randint(0,3) + self.hair_colour[1]
+        self.torso_variant = rand_source.randint(6,17), rand_source.randint(0,9)
+        self.hair_colour = rand_source.randint(0,1) * 4, rand_source.randint(0,2) * 4
+        self.hair_variant1 = 19 + rand_source.randint(0,3) + self.hair_colour[0], rand_source.randint(0,3) + self.hair_colour[1]
+        self.hair_variant2 = 19 + rand_source.randint(0,3) + self.hair_colour[0], rand_source.randint(0,3) + self.hair_colour[1]
 
 
         self.body = sm.get_sprite(f"character:0,{self.body_variant}")
@@ -35,11 +41,8 @@ class Character(Component):
         self.hair1 = sm.get_sprite(f"character:{self.hair_variant1}")
         self.hair2 = sm.get_sprite(f"character:{self.hair_variant2}")
 
-        self.tool = None
-        if self.variant == "axe":
-            self.tool = sm.get_sprite("character:47,1")
-        if self.variant == "pick":
-            self.tool = sm.get_sprite("character:50,1")
+        tool_sprite_id = self.get_tool_sprite_id(self.variant)
+        self.tool = sm.get_sprite_or_none(tool_sprite_id)
 
         # dynamics
         self.destination = None
@@ -47,7 +50,16 @@ class Character(Component):
 
         self.debug_arrows = []
 
+    @staticmethod
+    def get_tool_sprite_id(variant):
+        if variant == "axe":
+            return "character:47,1"
+        if variant == "pick":
+            return "character:50,1"
+        return None
+
     def go_to(self, destination):
+        #print(f"Setting destination {destination}")
         self.destination = destination
 
     def update(self, dt):
@@ -58,8 +70,10 @@ class Character(Component):
         speed = self.speed * dt
         diff = self.destination - self.parent.pos
         if diff.mag() > speed:
+            #print(f"moving toward {self.destination} by {speed}")
             self.parent.pos += diff.normal() * speed
         else:
+            #print(f"arriving at {self.destination}")
             self.parent.pos = self.destination
             self.destination = None
 
@@ -83,7 +97,6 @@ class Character(Component):
         engine.render_sprite(self.hair2, self.parent.pos)
         if self.tool:
             engine.render_sprite(self.tool, self.parent.pos)
-
 
         engine.render_text(f"{self.parent.name}", self.parent.pos)
         for debug_arrow in self.debug_arrows:

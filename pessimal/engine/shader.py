@@ -1,3 +1,6 @@
+# pragma: exclude file
+# shader requires OpenGL
+
 import math
 import numpy as np
 import os

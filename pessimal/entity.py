@@ -3,13 +3,14 @@ import sys
 import os
 import yaml
 from pessimal.v2 import V2
-from pessimal.component import Component, V2Field, Field, FloatField
+from pessimal.component import Component
+from pessimal.field import V2Field, Field, FloatField
 
 class Entity(Component):
     fields = [
             V2Field("start_pos", V2(0,0)),
             Field("name", "unnamed"),
-            FloatField("size", 1.0),
+            FloatField("size", 1.0, config={"slider":(0.0, 200.0)}),
             ]
 
     def __init__(self, parent, config):
@@ -24,6 +25,16 @@ class Entity(Component):
         #self.size = V2(size, size)
         self.entities = []
         self.components = []
+
+        for component_config in config.get("components",[]):
+            component = Component.create(component_config, self)
+            assert component, f"Error with component: {component_config=}"
+            self.components.append(component)
+        # we want to allow hierarchies
+        for entity_config in config.get("entities",[]):
+            sub_entity = Component.create(entity_config, self)
+            assert sub_entity, f"Error with sub_entity: {entity_config=}"
+            self.entities.append(sub_entity)
 
     def save_out(self):
         config = super().save_out()
@@ -45,6 +56,8 @@ class Entity(Component):
         for entity in self.get_entities():
             if entity.name == name:
                 return entity
+            if found := entity.find_entity_by_name(name):
+                return found
         return None
 
     def find_entities_by_component(self, component_name):
@@ -70,6 +83,8 @@ class Entity(Component):
             component.stop()
 
     def get_pos(self):
+        if self.parent is not None:
+            return self.parent.get_pos() + self.pos
         return self.pos
 
     def get_size(self):
@@ -78,10 +93,14 @@ class Entity(Component):
     def update(self, dt):
         for component in self.components:
             component.update(dt)
+        for entity in self.entities:
+            entity.update(dt)
 
     def render(self, engine):
         for component in self.components:
             component.render(engine)
+        for entity in self.entities:
+            entity.render(engine)
 
     def get_component(self, component_name):
         for component in self.components:

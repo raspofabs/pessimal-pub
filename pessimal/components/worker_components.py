@@ -1,7 +1,8 @@
 from ast import literal_eval
 from collections import defaultdict
 from enum import Enum
-from pessimal.component import Component, Field, IntField, ListField
+from pessimal.component import Component
+from pessimal.field import Field, IntField, ListField
 from pessimal.v2 import V2
 
 class WorkerState(Enum):
@@ -57,17 +58,17 @@ class Worker(Component):
     def reward_effort(self):
         if self.state == WorkerState.FETCHING_MATERIALS:
             world_resource = self.task_info.get("resource")
+            assert world_resource is not None
             #print(f"fetched materials from {world_resource}")
-            if world_resource is not None:
-                world_resource.current_quantity -= 1
-                self.carrying[world_resource.kind] += 1
+            world_resource.current_quantity -= 1
+            self.carrying[world_resource.kind] += 1
         elif self.state == WorkerState.WORKING:
             workcentre = self.get_workcentre()
             recipe = self.task_info.get("recipe")
             if recipe is None:
                 materials = [workcentre.inputs[0]]
                 product = workcentre.products[0]
-            else:
+            else: # pragma: no cover
                 materials, product = recipe
             workcentre.inventory[product] += 1
             for material in materials:
@@ -146,6 +147,7 @@ class Worker(Component):
         # create a task to walk to work and set WorkerState.WORKING when I get there.
         self.task_info["destination"] = door_pos
         self.state = WorkerState.COMMUTING_TO
+        #print(f"Heading to work. {self}")
         return Worker.head_to
 
 
@@ -162,7 +164,7 @@ class Worker(Component):
                 closest = world_resource
 
         if closest is None:
-            print("No materials available...")
+            #print("No materials available...")
             return self.have_a_think(4.0, WorkerState.FETCHING_MATERIALS)
         # create a task to walk to work and set WorkerState.WORKING when I get there.
         self.task_info["destination"] = closest.parent.pos
@@ -183,14 +185,13 @@ class Worker(Component):
             self.task = self.task(self, dt)
 
         if self.task is None:
+            assert self.state != WorkerState.THINKING, (f"Shouldn't be in this state: {self.task_info}")
             if self.task_queue:
                 self.task = self.task_queue.pop(0)
             elif self.state == WorkerState.RESTING:
                 self.task = self.go_to_work()
             elif self.state == WorkerState.COMMUTING_TO:
                 self.task = self.have_a_think(1.0, WorkerState.WORKING)
-            elif self.state == WorkerState.THINKING:
-                print(f"Shouldn't be in this state: {self.task_info}")
             elif self.state == WorkerState.WORKING:
                 if self.get_workcentre().have_materials():
                     #print("Have materials, producing output")
@@ -202,7 +203,7 @@ class Worker(Component):
                 #print("Fetched materials, going back to work")
                 self.task = self.go_to_work()
                 self.task_queue.append(Worker.drop_off)
-            elif self.state == WorkerState.DELIVERING_PRODUCTS:
+            elif self.state == WorkerState.DELIVERING_PRODUCTS: # pragma: no cover
                 self.task = self.go_to_work()
 
     def render(self, engine):
@@ -239,7 +240,7 @@ class WorkCentre(Component):
     def update(self, dt):
         # add at least 1 of each so we have some inventory
         for product in self.products:
-            if self.backlog[product] + self.inventory[product] == 0:
+            if self.backlog.get(product,0) + self.inventory.get(product,0) == 0:
                 self.make_order(product)
 
     def have_materials(self):
@@ -247,7 +248,7 @@ class WorkCentre(Component):
         # find required material
         # check stock
         for material in self.inputs:
-            if self.stock[material] == 0:
+            if self.stock.get(material, 0) == 0:
                 return False
         return True
 

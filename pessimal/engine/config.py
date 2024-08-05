@@ -1,8 +1,9 @@
 import yaml
+from pathlib import Path
 
-def load_config():
+def load_config(config_path: Path = "config.yaml"):
     try:
-        with open("config.yaml") as fh:
+        with open(config_path) as fh:
             config = yaml.safe_load(fh)
             return config
     except FileNotFoundError:

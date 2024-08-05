@@ -1,5 +1,6 @@
 from ast import literal_eval
-from pessimal.component import Component, Field, IntField
+from pessimal.component import Component
+from pessimal.field import Field, IntField
 
 
 class WorldResource(Component):

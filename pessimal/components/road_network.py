@@ -1,5 +1,6 @@
 from ast import literal_eval
-from pessimal.component import Component, DictField, IntField, Field
+from pessimal.component import Component
+from pessimal.field import DictField, Field, IntField
 from pessimal.v2 import V2
 from pessimal.sprite_manager import SpriteManager
 
@@ -24,13 +25,12 @@ class RoadSegment:
 
 class RoadNetwork(Component):
     fields = [
-            DictField("roads", None),
+            DictField("roads", {}),
             ]
 
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
-        #self.roads = config.get("roads")
         self.road_segments = {}
 
         sm = SpriteManager.get_manager()
@@ -49,9 +49,6 @@ class RoadNetwork(Component):
                 best = (segment, point_on_segment)
                 best_distance = distance
         return best
-
-    def get_distance(self, start: V2, end: V2) -> float:
-        return 0.0
 
     def render(self, engine):
         if not engine.should_render(self.parent.pos):

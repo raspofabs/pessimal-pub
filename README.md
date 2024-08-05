@@ -15,6 +15,12 @@ Once the starting points are available, I plan to apply my migration strategy
 to each as a sequence of tagged steps so people can see the changes and the
 impact.
 
+# Notes
+
+During the creation of the base project, I had a revelation about OO
+design. In case I have more, I'm going to keep notes in [NOTES.md] in case I
+have other thoughts inspired by the process of creation.
+
 # Todo list
 
 - Finish making the base game

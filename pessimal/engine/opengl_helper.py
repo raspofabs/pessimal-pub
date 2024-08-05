@@ -1,5 +1,9 @@
+# pragma: exclude file
+# this simple file interacts deeply with OpenGL, making testing difficult.
+
 from OpenGL.GL import *
 import pygame
+import os
 from imgui.integrations.opengl import get_common_gl_state, restore_common_gl_state
 
 
@@ -14,6 +18,7 @@ class OpenGLHelper:
         self.state = None
 
     def init_gl(self, window_size):
+        assert os.environ.get("SDL_VIDEODRIVER") != "dummy"
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MAJOR_VERSION, 3)
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MINOR_VERSION, 1)
         self.screen = pygame.display.set_mode(window_size, pygame.DOUBLEBUF|pygame.OPENGL)

@@ -1,0 +1,17 @@
+{
+    "en": {
+        "test_line": "This is a test line",
+        "one": "One",
+        "two": "Two"
+    },
+    "de": {
+        "test_line": "Dies ist ein Testsatz",
+        "one": "Ein",
+        "two": "Zwei"
+    },
+    "fr": {
+        "test_line": "Il s'agit d'une phrase test",
+        "one": "Une",
+        "two": "Deux"
+    }
+}

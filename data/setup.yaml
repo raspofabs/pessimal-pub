@@ -13,7 +13,7 @@ entities:
 - components:
   - centre: '[0.00, 0.00]'
     radius: 160
-    speed: 1
+    speed: 4
     type: Orbiter
   - colour: (40, 220, 10)
     type: SimpleRender
@@ -56,13 +56,14 @@ entities:
     width: 3
   - inputs:
     - tree
+    - fallen-tree
     inventory_limit: 10
     job: Lumberjack
     products:
     - lumber
     type: WorkCentre
   name: First home
-  size: 128.0
+  size: 124.836
   start_pos: '[-90.00, -55.00]'
   type: Entity
 - components:

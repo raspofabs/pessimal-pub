@@ -1,3 +1,6 @@
+# pragma: exclude file
+# model requires OpenGL
+
 from OpenGL.GL import *
 from .opengl_helper import check_gl_error
 import numpy as np

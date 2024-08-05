@@ -1,5 +1,6 @@
 from ast import literal_eval
-from pessimal.component import Component, LiteralField
+from pessimal.component import Component
+from pessimal.field import LiteralField
 
 class SimpleRender(Component):
     fields = [

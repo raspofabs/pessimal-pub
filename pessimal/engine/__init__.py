@@ -1,7 +1,10 @@
+# pragma: exclude file
+# engine requires gui, so removing from coverage report
+
 import pygame
 import sys
 import os
-import i18n
+from .i18n_support import setup_i18n
 from OpenGL.GL import *
 from enum import Enum
 from pessimal.v2 import V2
@@ -34,7 +37,7 @@ class EngineDependent:
         engine.add_dependent(self)
         pass
 
-    def handle_event(self, event):
+    def process_event(self, event):
         pass
 
     def start(self):
@@ -51,17 +54,14 @@ class EngineDependent:
 
 
 class Engine:
-    def __init__(self):
+    def __init__(self, config_override: dict = None):
         self.status = SystemStatus.RUNNING
         
         config = load_config()
-        # setup localisation
-        locale = "en"
-        i18n.load_path.append("data/i18n")
-        i18n.set('file_format', 'json')
-        i18n.set('filename_format', '{namespace}.{format}')
-        i18n.set('locale',locale)  # set again later in UIManager
-        assert i18n.t("ui.play") == "Play", f"{i18n.t('ui.play') =}"
+
+        setup_i18n(config_override)
+
+        assert os.environ.get("SDL_VIDEODRIVER") != "dummy"
         pygame.init()
 
         # setup rendering
@@ -80,7 +80,7 @@ class Engine:
 
         print(f"screen {self.display_size}@{self.display_pos}")
         self.clock = pygame.time.Clock()
-        pygame.display.set_caption(f"pessimal {self.status}")
+        pygame.display.set_caption(f"Pessimal : {self.status}")
         self.display_centre = tuple(map(lambda x: x/2, self.display_size))
         self.font = pygame.font.SysFont("consolas", 16)
         self.camera = Camera2D(display_size=V2(*self.display_size))
@@ -123,7 +123,8 @@ class Engine:
         self.running = True
 
     def shutdown(self):
-        sys.exit()
+        pygame.quit()
+        #sys.exit()
 
     def switch_status(self, new_status: SystemStatus):
         if self.status != new_status:
@@ -134,7 +135,7 @@ class Engine:
                 for dependent in self.dependents:
                     dependent.start()
             self.status = new_status
-            pygame.display.set_caption(f"pessimal : {self.status}")
+            pygame.display.set_caption(f"Pessimal : {self.status}")
 
     def push_font_bold(self):
         imgui.push_font(self.imgui_bold_font)

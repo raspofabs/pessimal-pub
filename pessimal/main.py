@@ -1,3 +1,6 @@
+# pragma: exclude file
+# main requires full running window and OpenGL
+
 from pessimal.game import Game
 from pessimal.editor import Editor
 from pessimal.engine import Engine

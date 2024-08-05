@@ -7,6 +7,11 @@
 # Note: When calling images_at the rect is the format:
 # (x, y, x + offset, y + offset)
 
+# pragma: exclude file
+# This is not my code.
+# I could test it, but I'm not certain of the value yet.
+
+
 import pygame
 
 class spritesheet(object):

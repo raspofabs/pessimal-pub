@@ -1,4 +1,5 @@
-from pessimal.component import Component, IntField
+from pessimal.component import Component
+from pessimal.field import IntField
 
 
 class Player(Component):

@@ -1,3 +1,6 @@
+# pragma: exclude file
+# texture requires OpenGL
+
 from OpenGL.GL import *
 import pygame
 

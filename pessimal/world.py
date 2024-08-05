@@ -1,4 +1,3 @@
-from pessimal.v2 import V2
 from pessimal.component import Component
 import pessimal.components
 from pessimal.entity import Entity
@@ -14,13 +13,8 @@ class World(Entity):
 
     def add_entity(self, entity_config):
         entity = Entity(self, entity_config)
-        for component_config in entity_config.get("components",[]):
-            component = Component.create(component_config, entity)
-            if component:
-                entity.components.append(component)
-            else:
-                print(f"Error with component: {component_config=}")
         self.entities.append(entity)
+        return entity
 
     def delete_entity(self, entity_to_delete):
         self.scheduled_to_delete.append(entity_to_delete)

@@ -43,6 +43,11 @@ class SpriteManager:
             cls.default_manager = cls()
         return cls.default_manager
     
+    def get_sprite_or_none(self, sprite_id):
+        if sprite_id is None:
+            return None
+        return self.get_sprite(sprite_id)
+
     def get_sprite(self, sprite_id):
         assert sprite_id is not None
         if ":" not in sprite_id:
