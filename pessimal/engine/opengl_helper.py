@@ -10,7 +10,7 @@ from imgui.integrations.opengl import get_common_gl_state, restore_common_gl_sta
 def check_gl_error():
     status = glGetError()
     if status != GL_NO_ERROR:
-        raise RuntimeError('gl error %s' % (status,))
+        raise RuntimeError("gl error %s" % (status,))
 
 
 class OpenGLHelper:
@@ -21,7 +21,9 @@ class OpenGLHelper:
         assert os.environ.get("SDL_VIDEODRIVER") != "dummy"
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MAJOR_VERSION, 3)
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MINOR_VERSION, 1)
-        self.screen = pygame.display.set_mode(window_size, pygame.DOUBLEBUF|pygame.OPENGL)
+        self.screen = pygame.display.set_mode(
+            window_size, pygame.DOUBLEBUF | pygame.OPENGL
+        )
         glDepthMask(GL_TRUE)
         glDepthFunc(GL_LESS)
         glEnable(GL_DEPTH_TEST)
@@ -41,11 +43,25 @@ class OpenGLHelper:
         last_array_buffer = glGetIntegerv(GL_ARRAY_BUFFER_BINDING)
         last_element_array_buffer = glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING)
         last_vertex_array = glGetIntegerv(GL_VERTEX_ARRAY_BINDING)
-        self.state = (common_gl_state_tuple, last_program, last_active_texture, last_array_buffer, last_element_array_buffer, last_vertex_array)
+        self.state = (
+            common_gl_state_tuple,
+            last_program,
+            last_active_texture,
+            last_array_buffer,
+            last_element_array_buffer,
+            last_vertex_array,
+        )
 
     def reload_state(self):
         assert self.state is not None
-        common_gl_state_tuple, last_program, last_active_texture, last_array_buffer, last_element_array_buffer, last_vertex_array = self.state
+        (
+            common_gl_state_tuple,
+            last_program,
+            last_active_texture,
+            last_array_buffer,
+            last_element_array_buffer,
+            last_vertex_array,
+        ) = self.state
         restore_common_gl_state(common_gl_state_tuple)
         glUseProgram(last_program)
         glActiveTexture(last_active_texture)
@@ -53,4 +69,3 @@ class OpenGLHelper:
         glBindBuffer(GL_ARRAY_BUFFER, last_array_buffer)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, last_element_array_buffer)
         self.state = None
-

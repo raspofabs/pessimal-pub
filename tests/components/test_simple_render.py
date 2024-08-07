@@ -14,14 +14,15 @@ def f_simple_render_config():
         "type": "Entity",
         "name": "Blue",
         "size": 16.0,
-        "start_pos": '[0.00, 0.00]',
-        "components":[
+        "start_pos": "[0.00, 0.00]",
+        "components": [
             {
                 "type": "SimpleRender",
                 "colour": "(30, 90, 200)",
-                }
-            ],
-        }
+            }
+        ],
+    }
+
 
 def test_simple_render(f_mock_engine, f_simple_world, f_simple_render_config):
     simple_render_entity = f_simple_world.add_entity(f_simple_render_config)
@@ -40,4 +41,3 @@ def test_simple_render_render(f_mock_engine, f_simple_render_config, f_simple_wo
     # not rendering
     f_mock_engine.toggle_culling()
     f_simple_world.render(f_mock_engine)
-

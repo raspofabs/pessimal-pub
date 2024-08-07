@@ -14,6 +14,7 @@ from pessimal.component import Component
 from pessimal.field import Field, FloatField, IntField, V2Field
 from pessimal.entity import Entity
 
+
 class Editor(EngineDependent):
     def __init__(self, engine, game):
         super().__init__(engine)
@@ -59,11 +60,11 @@ class Editor(EngineDependent):
         for field in component.fields:
             self.handle_field(component, field)
 
-    def editor_view(self): 
+    def editor_view(self):
         component_types = Component.get_all_component_types()
 
         if imgui.button(i18n.t("ui.hello_button")):
-            print('Hello editor!')
+            print("Hello editor!")
         with imgui.begin_group():
             if imgui.button(i18n.t("ui.play")):
                 self.engine.switch_status(SystemStatus.RUNNING)
@@ -79,7 +80,9 @@ class Editor(EngineDependent):
         with imgui.begin_group():
             imgui.text("World")
             imgui.same_line()
-            _, self.entity_filter = imgui.input_text("filter entities", self.entity_filter)
+            _, self.entity_filter = imgui.input_text(
+                "filter entities", self.entity_filter
+            )
             _, self.new_entity_name = imgui.input_text("Name", self.new_entity_name)
             imgui.same_line()
             if imgui.button("Create Entity"):
@@ -87,10 +90,20 @@ class Editor(EngineDependent):
             for entity in self.game.world.entities:
                 selected = entity == self.selected_entity_or_component
                 selected_flag = imgui.TREE_NODE_SELECTED if selected else 0
-                if self.entity_filter and self.entity_filter.lower() not in entity.name.lower():
+                if (
+                    self.entity_filter
+                    and self.entity_filter.lower() not in entity.name.lower()
+                ):
                     continue
-                entity_open = imgui.tree_node(f"{entity.name}", selected_flag|imgui.TREE_NODE_OPEN_ON_ARROW|imgui.TREE_NODE_OPEN_ON_DOUBLE_CLICK)
-                with imgui.begin_popup_context_item(str(id(entity)), mouse_button=2) as popup:
+                entity_open = imgui.tree_node(
+                    f"{entity.name}",
+                    selected_flag
+                    | imgui.TREE_NODE_OPEN_ON_ARROW
+                    | imgui.TREE_NODE_OPEN_ON_DOUBLE_CLICK,
+                )
+                with imgui.begin_popup_context_item(
+                    str(id(entity)), mouse_button=2
+                ) as popup:
                     if popup.opened:
                         clicked, state = imgui.menu_item("Delete entity")
                         if clicked:
@@ -101,7 +114,9 @@ class Editor(EngineDependent):
                         imgui.pop_font()
                         imgui.indent()
                         for component_type in component_types:
-                            clicked, state = imgui.menu_item(f"{component_type.__name__}")
+                            clicked, state = imgui.menu_item(
+                                f"{component_type.__name__}"
+                            )
                             if clicked:
                                 print(f"new component : {component_type.__name__}")
                                 new_component = component_type(entity, {})
@@ -113,7 +128,12 @@ class Editor(EngineDependent):
                     for component in entity.components:
                         selected = component == self.selected_entity_or_component
                         selected_flag = imgui.TREE_NODE_SELECTED if selected else 0
-                        component_open = imgui.tree_node(f"{component.__class__.__name__}", selected_flag|imgui.TREE_NODE_OPEN_ON_ARROW|imgui.TREE_NODE_OPEN_ON_DOUBLE_CLICK)
+                        component_open = imgui.tree_node(
+                            f"{component.__class__.__name__}",
+                            selected_flag
+                            | imgui.TREE_NODE_OPEN_ON_ARROW
+                            | imgui.TREE_NODE_OPEN_ON_DOUBLE_CLICK,
+                        )
                         if imgui.is_item_clicked():
                             self.selected_entity_or_component = component
                         if component_open:

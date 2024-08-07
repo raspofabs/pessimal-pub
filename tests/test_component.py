@@ -52,5 +52,5 @@ def test_basics():
 def test_construction(f_mock_engine):
     unknown = pc.Component.create({}, None)
     assert unknown is None
-    nothing = pc.Component.create({"type":"Nothing"}, None)
+    nothing = pc.Component.create({"type": "Nothing"}, None)
     assert nothing is None

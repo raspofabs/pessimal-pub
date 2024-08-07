@@ -1,10 +1,11 @@
 from pessimal.v2 import V2
 
+
 class Camera2D:
     def __init__(self, *, display_size: V2 = None):
-        self.display_size = display_size or V2(100,100)
+        self.display_size = display_size or V2(100, 100)
         self.scale = 1.0
-        self.centre_on(V2(0,0))
+        self.centre_on(V2(0, 0))
 
     def set_display(self, display_size: V2):
         # find old pos

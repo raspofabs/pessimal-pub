@@ -16,8 +16,8 @@ def f_workcenter_config():
         "type": "Entity",
         "name": "BytesRUs",
         "size": 16.0,
-        "start_pos": '[16.00, 0.00]',
-        "components":[
+        "start_pos": "[16.00, 0.00]",
+        "components": [
             {
                 "type": "Building",
                 "name": "Office",
@@ -25,20 +25,21 @@ def f_workcenter_config():
                 "storeys": 1,
                 "width": 2,
                 "door_x_pos": 1,
-                },
+            },
             {
                 "type": "WorkCentre",
                 "job": "Coder",
                 "inventory_limit": 3,
-                "inputs":[
+                "inputs": [
                     "client request",
-                    ],
-                "products":[
+                ],
+                "products": [
                     "software",
-                    ]
-                },
-            ],
-        }
+                ],
+            },
+        ],
+    }
+
 
 @pytest.fixture
 def f_worker_config():
@@ -46,24 +47,30 @@ def f_worker_config():
         "type": "Entity",
         "name": "Bill",
         "size": 16.0,
-        "start_pos": '[0.00, 16.00]',
-        "components":[
+        "start_pos": "[0.00, 16.00]",
+        "components": [
             {
                 "type": "Character",
                 "variant": "keyboard",
                 "speed": 40,
-                },
+            },
             {
                 "type": "Worker",
                 "job": "Coder",
                 "workcentre": "BytesRUs",
-                },
-            ],
-        }
+            },
+        ],
+    }
 
 
 @pytest.fixture
-def f_world_setup(f_mock_engine, f_simple_world, f_world_resource_config, f_workcenter_config, f_worker_config):
+def f_world_setup(
+    f_mock_engine,
+    f_simple_world,
+    f_world_resource_config,
+    f_workcenter_config,
+    f_worker_config,
+):
     worker_entity = f_simple_world.add_entity(f_worker_config)
     assert worker_entity is not None
 
@@ -107,15 +114,15 @@ def test_worker(f_mock_engine, f_world_setup):
     # test worker progress
 
     assert "RESTING" in str(wc)
-    assert worker_entity.pos == V2(0,16)
+    assert worker_entity.pos == V2(0, 16)
     world.update(1.0)
 
     # commute to work
     assert "COMMUTING" in str(wc)
-    assert worker_entity.pos == V2(0,16)
+    assert worker_entity.pos == V2(0, 16)
     world.update(0.0)
     world.update(1.0)
-    assert worker_entity.pos == V2(32,0)
+    assert worker_entity.pos == V2(32, 0)
 
     # THINK
     assert "THINKING" in str(wc)
@@ -128,6 +135,7 @@ def test_worker(f_mock_engine, f_world_setup):
         world.update(0.5)
         f_mock_engine.toggle_culling()
         world.render(f_mock_engine)
+
 
 def test_no_resources(f_mock_engine, f_world_setup):
     world = f_world_setup
@@ -142,15 +150,15 @@ def test_no_resources(f_mock_engine, f_world_setup):
     # test worker progress without resource
 
     assert "RESTING" in str(wc)
-    assert worker_entity.pos == V2(0,16)
+    assert worker_entity.pos == V2(0, 16)
     world.update(1.0)
 
     # commute to work
     assert "COMMUTING" in str(wc)
-    assert worker_entity.pos == V2(0,16)
+    assert worker_entity.pos == V2(0, 16)
     world.update(0.0)
     world.update(1.0)
-    assert worker_entity.pos == V2(32,0)
+    assert worker_entity.pos == V2(32, 0)
 
     # THINK
     assert "THINKING" in str(wc)
@@ -171,12 +179,12 @@ def test_reward_effort_without_correct_state(f_mock_engine, f_world_setup):
     wcc_before = copy.deepcopy(wcc)
 
     assert wc.carrying == wc_before.carrying
-    assert wcc.inventory == wcc_before.inventory 
-    assert wcc.stock == wcc_before.stock 
+    assert wcc.inventory == wcc_before.inventory
+    assert wcc.stock == wcc_before.stock
     wc.reward_effort()
     assert wc.carrying == wc_before.carrying
-    assert wcc.inventory == wcc_before.inventory 
-    assert wcc.stock == wcc_before.stock 
+    assert wcc.inventory == wcc_before.inventory
+    assert wcc.stock == wcc_before.stock
 
 
 def test_having_a_think_with_next_state(f_mock_engine, f_world_setup):
@@ -206,15 +214,15 @@ def test_output_is_full(f_mock_engine, f_world_setup):
     # test worker progress
 
     assert "RESTING" in str(wc)
-    assert worker_entity.pos == V2(0,16)
+    assert worker_entity.pos == V2(0, 16)
     world.update(1.0)
 
     # commute to work
     assert "COMMUTING" in str(wc)
-    assert worker_entity.pos == V2(0,16)
+    assert worker_entity.pos == V2(0, 16)
     world.update(0.0)
     world.update(1.0)
-    assert worker_entity.pos == V2(32,0)
+    assert worker_entity.pos == V2(32, 0)
 
     # THINK
     assert "THINKING" in str(wc)
@@ -272,5 +280,3 @@ def test_recipes():
 # TODO: add delivering
 def test_delivering():
     pass
-
-

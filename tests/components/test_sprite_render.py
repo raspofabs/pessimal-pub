@@ -14,14 +14,15 @@ def f_sprite_config():
         "type": "Entity",
         "name": "PathTee",
         "size": 16.0,
-        "start_pos": '[0.00, 0.00]',
-        "components":[
+        "start_pos": "[0.00, 0.00]",
+        "components": [
             {
                 "type": "SpriteRender",
                 "sprite_id": "1bit:path_tee",
-                }
-            ],
-        }
+            }
+        ],
+    }
+
 
 def test_sprite(f_mock_engine, f_simple_world, f_sprite_config):
     sprite_entity = f_simple_world.add_entity(f_sprite_config)

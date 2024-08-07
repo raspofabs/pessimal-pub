@@ -17,9 +17,9 @@ class Shader:
     y_camera_angle = 0
     view_matrix = m44_get_identity()
     camera_matrix = m44_get_identity()
-    aspect = 16/9
+    aspect = 16 / 9
 
-    def __init__(self, vertex: 'os.PathLike[str]', fragment: 'os.PathLike[str]'):
+    def __init__(self, vertex: "os.PathLike[str]", fragment: "os.PathLike[str]"):
         vert = source_shader(vertex, GL_VERTEX_SHADER)
         frag = source_shader(fragment, GL_FRAGMENT_SHADER)
         self.program = link_shader(vert, frag)
@@ -54,7 +54,7 @@ class Shader:
     @classmethod
     def set_aspect(cls, aspect):
         if type(aspect) == tuple:
-            Shader.aspect = aspect[0]/aspect[1]
+            Shader.aspect = aspect[0] / aspect[1]
         else:
             Shader.aspect = aspect
         Shader.projection_matrix = None
@@ -92,12 +92,24 @@ class Shader:
         side = v_normalize(np.cross(fwd, up_base))
         up = np.cross(side, fwd)
         Shader.view_matrix = [
-            side[0], up[0], -fwd[0], 0,
-            side[1], up[1], -fwd[1], 0,
-            side[2], up[2], -fwd[2], 0,
-            np.dot(side, pos), np.dot(up, pos), np.dot(fwd, pos), 1.0
+            side[0],
+            up[0],
+            -fwd[0],
+            0,
+            side[1],
+            up[1],
+            -fwd[1],
+            0,
+            side[2],
+            up[2],
+            -fwd[2],
+            0,
+            np.dot(side, pos),
+            np.dot(up, pos),
+            np.dot(fwd, pos),
+            1.0,
         ]
-        #print(Shader.view_matrix)
+        # print(Shader.view_matrix)
 
     @classmethod
     def get_camera_forward(cls):
@@ -119,39 +131,72 @@ class Shader:
     def set_view_y(cls, y):
         Shader.y_camera_angle = y
         Shader.view_matrix = [
-            np.cos(y), 0.0, -np.sin(y), 0.0,
-            0.0, 1.0, 0.0, 0.0,
-            np.sin(y), 0.0, np.cos(y), 0.0,
-            Shader.x_camera_pos, Shader.y_camera_pos, Shader.z_camera_pos, 1.0]
+            np.cos(y),
+            0.0,
+            -np.sin(y),
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            np.sin(y),
+            0.0,
+            np.cos(y),
+            0.0,
+            Shader.x_camera_pos,
+            Shader.y_camera_pos,
+            Shader.z_camera_pos,
+            1.0,
+        ]
 
     @classmethod
     def set_view_pos(cls, pos):
         Shader.x_camera_pos, Shader.y_camera_pos, Shader.z_camera_pos = pos
-        Shader.view_matrix = Shader.view_matrix[:12]+pos+[1.0]
+        Shader.view_matrix = Shader.view_matrix[:12] + pos + [1.0]
 
     def get_orthographic(self):
         self.projection_matrix = [
-            2.0 / (self.left-self.right), 0.0, 0.0, 0.0,
-            0.0, 2.0 / (self.top-self.bottom), 0.0, 0.0,
-            0.0, 0.0, -2.0 / (self.far-self.near), 0.0,
-
+            2.0 / (self.left - self.right),
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            2.0 / (self.top - self.bottom),
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -2.0 / (self.far - self.near),
+            0.0,
             -(self.left + self.right) / (self.right - self.left),
             -(self.top + self.bottom) / (self.top - self.bottom),
             -(self.far + self.near) / (self.far - self.near),
             1.0,
-            ]
+        ]
         return self.projection_matrix
 
     def get_perspective(self):
         if self.projection_matrix is None:
-            y_max = self.z_near * np.tan(self.fov/2)
+            y_max = self.z_near * np.tan(self.fov / 2)
             x_max = y_max * Shader.aspect
             div = 1.0 / (self.z_far - self.z_near)
             self.projection_matrix = [
-                self.z_near / x_max, 0.0, 0.0, 0.0,
-                0.0, self.z_near / y_max, 0.0, 0.0,
-                0.0, 0.0, -(self.z_far+self.z_near) * div, -1.0,
-                0.0, 0.0, -2.0 * self.z_far * self.z_near * div, 0.0
+                self.z_near / x_max,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                self.z_near / y_max,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -(self.z_far + self.z_near) * div,
+                -1.0,
+                0.0,
+                0.0,
+                -2.0 * self.z_far * self.z_near * div,
+                0.0,
             ]
         return self.projection_matrix
 
@@ -163,7 +208,9 @@ class Shader:
         else:
             return m44_get_identity()
 
-    def draw_model(self, model, model_matrix=None, col=None, instance_pos_vbo=None, num_instances=0):
+    def draw_model(
+        self, model, model_matrix=None, col=None, instance_pos_vbo=None, num_instances=0
+    ):
         if model_matrix is None:
             model_matrix = m44_get_identity()
         glUseProgram(self.program)
@@ -207,9 +254,9 @@ class Shader:
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
         if draw_instances:
-            glDrawArraysInstanced(GL_TRIANGLES, 0, 3*model.tri_count, num_instances)
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 3 * model.tri_count, num_instances)
         else:
-            glDrawArrays(GL_TRIANGLES, 0, 3*model.tri_count)
+            glDrawArrays(GL_TRIANGLES, 0, 3 * model.tri_count)
         check_gl_error()
 
 
@@ -241,8 +288,6 @@ class ShaderManager:
             return None
 
 
-
-
 def link_shader(vertex_shader, fragment_shader):
     program = glCreateProgram()
     glAttachShader(program, vertex_shader)
@@ -256,13 +301,14 @@ def link_shader(vertex_shader, fragment_shader):
     return program
 
 
-def source_shader(filename: 'os.PathLike[str]', shader_type: 'os.PathLike[str]'):
+def source_shader(filename: "os.PathLike[str]", shader_type: "os.PathLike[str]"):
     source = open(filename, "rt").read()
     shader = glCreateShader(shader_type)
     glShaderSource(shader, source)
     glCompileShader(shader)
     success = glGetShaderiv(shader, GL_COMPILE_STATUS)
     if not success:
-        print(f"shader compilation failed for {filename}:\n{glGetShaderInfoLog(shader)}")
+        print(
+            f"shader compilation failed for {filename}:\n{glGetShaderInfoLog(shader)}"
+        )
     return shader
-

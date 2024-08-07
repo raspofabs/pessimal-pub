@@ -1,0 +1,42 @@
+entities:
+- components:
+  - centre: '[0.00, 0.00]'
+    radius: 80
+    speed: 4
+    type: Orbiter
+  - colour: (40, 80, 220)
+    type: SimpleRender
+  name: Simple Orbiter Blue
+  size: 4.0
+  start_pos: '[0.00, 0.00]'
+  type: Entity
+- components:
+  - colour: (200, 40, 40)
+    type: SimpleRender
+  name: Static red
+  size: 15.0
+  start_pos: '[-10.00, 0.00]'
+  type: Entity
+- components:
+  - rseed: null
+    speed: 40
+    type: Character
+    variant: axe
+  - job: Lumberjack
+    type: Worker
+    workcentre: First home
+  name: Jack
+  size: 16.0
+  start_pos: '[-110.00, -40.00]'
+  type: Entity
+- components:
+  - centre: '[0.00, 0.00]'
+    radius: 10
+    speed: 10
+    type: Orbiter
+  - sprite_id: 1bit:path_tee
+    type: SpriteRender
+  name: White
+  size: 4.0
+  start_pos: '[0.00, 0.00]'
+  type: Entity

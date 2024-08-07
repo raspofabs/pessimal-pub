@@ -24,14 +24,15 @@ def test_engine():
     engine.switch_status(SystemStatus.PAUSED)
     engine.switch_status(SystemStatus.RUNNING)
     for _ in range(5):
-        engine.clear_screen((20,20,20))
+        engine.clear_screen((20, 20, 20))
         engine.tick()
         engine.end_frame()
     engine.should_show_demo = True
     for _ in range(5):
-        engine.clear_screen((20,20,20))
+        engine.clear_screen((20, 20, 20))
         engine.tick()
         engine.end_frame()
+
 
 @pytest.mark.gui
 def test_simple_game_setup():

@@ -1,9 +1,10 @@
 import pygame
 from pessimal.v2 import V2
 
+
 class InputManager:
     def __init__(self):
-        self.direction = V2(0,0)
+        self.direction = V2(0, 0)
         self.zoom_in = False
         self.zoom_out = False
         self.up = False
@@ -36,12 +37,11 @@ class InputManager:
             self.right = event.type == pygame.KEYDOWN
 
         axial = {
-                (False, False): 0.0,
-                (False, True): 1.0,
-                (True, False): -1.0,
-                (True, True): 0.0,
-                }
+            (False, False): 0.0,
+            (False, True): 1.0,
+            (True, False): -1.0,
+            (True, True): 0.0,
+        }
 
         # update interpretation
         self.direction = V2(axial[self.left, self.right], axial[self.up, self.down])
-

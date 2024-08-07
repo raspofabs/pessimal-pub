@@ -26,6 +26,7 @@ class SystemStatus(Enum):
     RUNNING = 2
     PAUSED = 3
 
+
 FG_TEXT = (255, 255, 255)
 
 
@@ -56,7 +57,7 @@ class EngineDependent:
 class Engine:
     def __init__(self, config_override: dict = None):
         self.status = SystemStatus.RUNNING
-        
+
         config = load_config()
 
         setup_i18n(config_override)
@@ -65,26 +66,31 @@ class Engine:
         pygame.init()
 
         # setup rendering
-    
+
         infoObject = pygame.display.Info()
         w, h = infoObject.current_w, infoObject.current_h
 
         self.display_size = calculate_tuple(config, w, h, "screen_size", "50%, 50%")
         self.display_pos = calculate_tuple(config, w, h, "screen_pos", "25%, 25%")
-        os.environ['SDL_VIDEO_WINDOW_POS'] = '%d,%d' % self.display_pos
+        os.environ["SDL_VIDEO_WINDOW_POS"] = "%d,%d" % self.display_pos
         self.opengl_helper = OpenGLHelper()
         self.screen_3d = self.opengl_helper.init_gl(self.display_size)
         ShaderManager.load_config("data/shaders/config.yaml")
         self.margin = 10
-        self.screen_2d = pygame.Surface((self.display_size[0] - self.margin*2, self.display_size[1] - self.margin*2 - 20))
+        self.screen_2d = pygame.Surface(
+            (
+                self.display_size[0] - self.margin * 2,
+                self.display_size[1] - self.margin * 2 - 20,
+            )
+        )
 
         print(f"screen {self.display_size}@{self.display_pos}")
         self.clock = pygame.time.Clock()
         pygame.display.set_caption(f"Pessimal : {self.status}")
-        self.display_centre = tuple(map(lambda x: x/2, self.display_size))
+        self.display_centre = tuple(map(lambda x: x / 2, self.display_size))
         self.font = pygame.font.SysFont("consolas", 16)
         self.camera = Camera2D(display_size=V2(*self.display_size))
-        self.camera.centre_on(V2(0,0))
+        self.camera.centre_on(V2(0, 0))
 
         self.dependents = []
 
@@ -110,21 +116,21 @@ class Engine:
         bold_font_file_path = "data/font/FantasqueSansMNerdFont-Bold.ttf"
         font_pixel_size = int(config.get("font_size", 24))
         self.imgui_font = self.imgui_io.fonts.add_font_from_file_ttf(
-                font_file_path, font_pixel_size
-                )
+            font_file_path, font_pixel_size
+        )
         self.imgui_bold_font = self.imgui_io.fonts.add_font_from_file_ttf(
-                bold_font_file_path, font_pixel_size
-                )
+            bold_font_file_path, font_pixel_size
+        )
         self.imgui_impl.refresh_font_texture()
         self.imgui_io.display_size = self.display_size
         self.should_show_demo = False
-        
+
         # lets go
         self.running = True
 
     def shutdown(self):
         pygame.quit()
-        #sys.exit()
+        # sys.exit()
 
     def switch_status(self, new_status: SystemStatus):
         if self.status != new_status:
@@ -149,6 +155,9 @@ class Engine:
     def get_window_pos(self):
         return pygame.display.get_window_position()
 
+    def get_fps(self):
+        return self.clock.get_fps()
+
     def get_dt(self):
         return self.clock.get_time() / 1000.0
 
@@ -160,7 +169,7 @@ class Engine:
         events = pygame.event.get()
 
         for event in events:
-            #print(f"E: {event}")
+            # print(f"E: {event}")
             if event.type == pygame.QUIT:
                 self.running = False
             for dependent in self.dependents:
@@ -175,10 +184,9 @@ class Engine:
 
         if imgui.begin_main_menu_bar():
             if imgui.begin_menu("File", True):
-
                 clicked_quit, selected_quit = imgui.menu_item(
-                        "Quit", "Cmd+Q", False, True
-                        )
+                    "Quit", "Cmd+Q", False, True
+                )
 
                 if clicked_quit:
                     sys.exit(0)
@@ -186,25 +194,23 @@ class Engine:
                 imgui.end_menu()
             if imgui.begin_menu("Help", True):
                 clicked_show_demo, selected_show_demo = imgui.menu_item(
-                        "Show Demo", None, self.should_show_demo, True
-                        )
+                    "Show Demo", None, self.should_show_demo, True
+                )
 
                 if clicked_show_demo:
                     self.should_show_demo = not self.should_show_demo
 
                 imgui.end_menu()
-            #if imgui.button("menu button"):
+            # if imgui.button("menu button"):
             #    print("Menu button!")
             imgui.end_main_menu_bar()
 
         if self.should_show_demo:
             imgui.show_test_window()
 
-
         for dependent in self.dependents:
             dependent.update(dt)
             dependent.render(self)
-
 
         imgui.pop_font()
         self.end_frame()
@@ -212,7 +218,7 @@ class Engine:
     def clear_screen(self, colour):
         r, g, b, *a = colour
         # map 0-255 -> 0-1.0
-        glClearColor(r/255.0, g/255.0, b/255.0, 1.0)
+        glClearColor(r / 255.0, g / 255.0, b / 255.0, 1.0)
         glClearColor(0.5, 0.5, 0.5, 1.0)
         glClearDepth(1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -224,28 +230,35 @@ class Engine:
 
         self.transfer_texture.update_texture_from_surface(self.screen_2d)
         Shader.set_aspect(self.display_size)
-        Shader.set_ortho((0,0), self.display_size, -10, 100)
+        Shader.set_ortho((0, 0), self.display_size, -10, 100)
         self.transfer_instance.set_transform_pos([self.margin, self.margin + 20.0, 0.0])
-        self.transfer_instance.transform[0] = self.display_size[0] - self.margin*2
-        self.transfer_instance.transform[5] = self.display_size[1] - self.margin*2 - 20
+        self.transfer_instance.transform[0] = self.display_size[0] - self.margin * 2
+        self.transfer_instance.transform[5] = (
+            self.display_size[1] - self.margin * 2 - 20
+        )
         self.transfer_instance.render()
         imgui.render()
         self.imgui_impl.render(imgui.get_draw_data())
         pygame.display.flip()
-    
+
     def should_render(self, pos: V2, size: float = 16.0):
         return True
 
-    def render_sprite(self, sprite, pos: V2, size: V2 = V2(16,16)):
+    def render_sprite(self, sprite, pos: V2, size: V2 = V2(16, 16)):
         screen_pos = self.camera.pos_to_screen(pos)
         screen_size = self.camera.size_to_screen(size)
-        self.screen_2d.blit(pygame.transform.smoothscale(sprite, screen_size.as_coord()), screen_pos.as_coord())
+        self.screen_2d.blit(
+            pygame.transform.smoothscale(sprite, screen_size.as_coord()),
+            screen_pos.as_coord(),
+        )
 
     def render_circle(self, pos, size, colour):
         screen_pos = self.camera.pos_to_screen(pos)
         screen_size = self.camera.size_to_screen(size)
         screen_size_float = max(screen_size.as_coord())
-        pygame.draw.circle(self.screen_2d, colour, screen_pos.as_coord(), screen_size_float)
+        pygame.draw.circle(
+            self.screen_2d, colour, screen_pos.as_coord(), screen_size_float
+        )
 
     def render_rect(self, top_left, bottom_right, colour):
         screen_tl = self.camera.pos_to_screen(top_left)
@@ -259,7 +272,9 @@ class Engine:
     def render_line(self, start, end, colour):
         screen_start = self.camera.pos_to_screen(start)
         screen_end = self.camera.pos_to_screen(end)
-        pygame.draw.line(self.screen_2d, colour, screen_start.as_coord(), screen_end.as_coord())
+        pygame.draw.line(
+            self.screen_2d, colour, screen_start.as_coord(), screen_end.as_coord()
+        )
 
     def render_text(self, text, position):
         img = self.font.render(text, True, FG_TEXT)

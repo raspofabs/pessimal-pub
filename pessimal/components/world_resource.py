@@ -5,9 +5,9 @@ from pessimal.field import Field, IntField
 
 class WorldResource(Component):
     fields = [
-            Field("kind", "dirt"),
-            IntField("quantity", 10),
-            ]
+        Field("kind", "dirt"),
+        IntField("quantity", 10),
+    ]
 
     def __init__(self, parent, config):
         super().__init__(parent, config)
@@ -15,7 +15,7 @@ class WorldResource(Component):
 
     def __str__(self):
         return f"{self.kind} - {self.current_quantity}/{self.quantity}"
-    
+
     def __repr__(self):
         return str(self)
 

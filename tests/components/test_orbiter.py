@@ -14,16 +14,16 @@ def f_orbiter_config():
         "type": "Entity",
         "name": "MyOrbiter",
         "size": 16.0,
-        "start_pos": '[0.00, 0.00]',
-        "components":[
+        "start_pos": "[0.00, 0.00]",
+        "components": [
             {
                 "type": "Orbiter",
                 "speed": 40,
-                "centre": '[0.00, 0.00]',
+                "centre": "[0.00, 0.00]",
                 "radius": 32,
-                },
-            ],
-        }
+            },
+        ],
+    }
 
 
 def test_orbiter(f_mock_engine, f_simple_world, f_orbiter_config):

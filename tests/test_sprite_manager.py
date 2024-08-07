@@ -3,6 +3,7 @@ from pessimal.sprite_manager import SpriteManager
 
 import pytest
 
+
 def test_sprite_manager(f_mock_engine):
     sm = SpriteManager.get_manager()
     dirtpath = sm.get_sprite("roguelike:dirtpath_")

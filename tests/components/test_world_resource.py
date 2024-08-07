@@ -14,15 +14,15 @@ def f_world_resource_config():
         "type": "Entity",
         "name": "Client",
         "size": 16.0,
-        "start_pos": '[0.00, 0.00]',
-        "components":[
+        "start_pos": "[0.00, 0.00]",
+        "components": [
             {
                 "type": "WorldResource",
                 "kind": "client request",
                 "quantity": 2,
-                },
-            ],
-        }
+            },
+        ],
+    }
 
 
 def test_world_resource(f_mock_engine, f_simple_world, f_world_resource_config):

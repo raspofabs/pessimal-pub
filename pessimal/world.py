@@ -13,7 +13,6 @@ class World(Entity):
 
     def add_entity(self, entity_config):
         entity = Entity(self, entity_config)
-        self.entities.append(entity)
         return entity
 
     def delete_entity(self, entity_to_delete):
@@ -22,7 +21,7 @@ class World(Entity):
     def save_out(self, config):
         for entity in self.entities:
             config["entities"].append(entity.save_out())
-        
+
     def start(self):
         for entity in self.entities:
             entity.start()
@@ -31,17 +30,25 @@ class World(Entity):
         for entity in self.entities:
             entity.stop()
 
+    @staticmethod
+    def delete_entity_from_tree(node, target):
+        if node is None:
+            return False
+        if target in node.entities:
+            node.entities.remove(target)
+            return True
+        for sub_node in node.entities:
+            if World.delete_entity_from_tree(sub_node, target):
+                return True
+        return False
+
     def update(self, dt):
         while self.scheduled_to_delete:
             target = self.scheduled_to_delete.pop()
-            if target in self.entities:
-                self.entities.remove(target)
-            else:
-                print(f"Child entity... {target}")
+            self.delete_entity_from_tree(self, target)
         for entity in self.entities:
             entity.update(dt)
 
     def render(self, engine):
         for entity in self.entities:
             entity.render(engine)
-

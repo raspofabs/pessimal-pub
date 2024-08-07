@@ -1,6 +1,7 @@
 import yaml
 from pathlib import Path
 
+
 def load_config(config_path: Path = "config.yaml"):
     try:
         with open(config_path) as fh:
@@ -25,4 +26,3 @@ def calculate_tuple(config, w, h, name, default):
     ws, hs = [x.strip() for x in setting.split(",")]
 
     return x_of_y(ws, w), x_of_y(hs, h)
-

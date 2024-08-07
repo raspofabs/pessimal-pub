@@ -4,6 +4,7 @@
 from OpenGL.GL import *
 import pygame
 
+
 class Texture:
     def __init__(self, size, data):
         self.id = glGenTextures(1)
@@ -12,12 +13,22 @@ class Texture:
         width, height = size
 
         glBindTexture(GL_TEXTURE_2D, self.id)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, self.data)
+        glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_RGB,
+            width,
+            height,
+            0,
+            GL_RGBA,
+            GL_UNSIGNED_BYTE,
+            self.data,
+        )
         glGenerateTextureMipmap(self.id)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        #glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
+        # glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 
     @staticmethod
@@ -29,26 +40,45 @@ class Texture:
         new_data = pygame.image.tostring(surface, "RGBA", False)
         width, height = self.size
         glBindTexture(GL_TEXTURE_2D, self.id)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, new_data)
+        glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_RGB,
+            width,
+            height,
+            0,
+            GL_RGBA,
+            GL_UNSIGNED_BYTE,
+            new_data,
+        )
         glGenerateTextureMipmap(self.id)
 
-
-    def read(self, filename: 'os.PathLike[str]'):
+    def read(self, filename: "os.PathLike[str]"):
         self.image = pygame.image.load(filename)
         # print(f"Image {filename} -> {self.image.get_width()} x {self.image.get_height()}")
         self.data = pygame.image.tostring(self.image, "RGBA", False)
         width = self.image.get_width()
         height = self.image.get_height()
         glBindTexture(GL_TEXTURE_2D, self.id)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, self.data)
+        glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_RGB,
+            width,
+            height,
+            0,
+            GL_RGBA,
+            GL_UNSIGNED_BYTE,
+            self.data,
+        )
         glGenerateTextureMipmap(self.id)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        #glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
+        # glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 
-    def read_xml(self, filename: 'os.PathLike[bytes]', print_names=False):
+    def read_xml(self, filename: "os.PathLike[bytes]", print_names=False):
         xml_data = xmltodict.parse(open(filename).read())
         prepend = os.path.dirname(filename)
         atlas = xml_data["TextureAtlas"]
@@ -75,4 +105,3 @@ class Texture:
         if sprite_name in self.lookup:
             return self.lookup[sprite_name]
         return 0, 0, 1, 1
-

@@ -3,6 +3,7 @@ import math
 
 from pessimal.v3 import V3
 
+
 def test_v3_class():
     zero = V3(0, 0, 0)
     assert zero.x == 0.0
@@ -26,6 +27,7 @@ def test_v3_class():
 
     assert V3(1, 1, 1).mag() > 1.0
     assert V3(1, 1, 1).mag() < 2.0
+
 
 def test_v3_casting():
     assert V3(3, 8, 0).as_coord() == (3, 8, 0)

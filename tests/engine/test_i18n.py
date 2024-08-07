@@ -3,10 +3,9 @@ from pathlib import Path
 
 import i18n
 
+
 def test_i18n():
-    override = {
-            "i18n_path": "tests/test_data/"
-            }
+    override = {"i18n_path": "tests/test_data/"}
 
     # setup default (English)
     setup_i18n(override)
@@ -23,4 +22,3 @@ def test_i18n():
 
     assert i18n.t("ui.one") == "Ein", f"{i18n.t('ui.one') =}"
     assert i18n.t("ui.two") == "Zwei", f"{i18n.t('ui.two') =}"
-

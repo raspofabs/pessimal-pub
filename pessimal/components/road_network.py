@@ -6,7 +6,7 @@ from pessimal.sprite_manager import SpriteManager
 
 
 class RoadSegment:
-    def __init__(self, start: V2 = V2(0,0), end: V2 = V2(1,0)):
+    def __init__(self, start: V2 = V2(0, 0), end: V2 = V2(1, 0)):
         self.start = start
         self.end = end
         diff = end - start
@@ -25,8 +25,8 @@ class RoadSegment:
 
 class RoadNetwork(Component):
     fields = [
-            DictField("roads", {}),
-            ]
+        DictField("roads", {}),
+    ]
 
     def __init__(self, parent, config):
         super().__init__(parent, config)
@@ -40,7 +40,7 @@ class RoadNetwork(Component):
             self.road_segments[name] = RoadSegment(V2(sx, sy), V2(ex, ey))
 
     def get_closest_road(self, pos: V2) -> tuple:
-        best = RoadSegment(), V2(0,0)
+        best = RoadSegment(), V2(0, 0)
         best_distance = 1e1000
         for name, segment in self.road_segments.items():
             point_on_segment = segment.closest_point(pos)
@@ -59,9 +59,12 @@ class RoadNetwork(Component):
             sx, sy, ex, ey = literal_eval(road_segment)
             engine.render_sprite(self.dirtpaths, self.parent.pos + V2(sx, sy))
             engine.render_sprite(self.dirtpaths, self.parent.pos + V2(ex, ey))
-            roadlength = abs(ex-sx) + abs(ey-sy)
+            roadlength = abs(ex - sx) + abs(ey - sy)
             steps = int(roadlength / 16)
             for x in range(steps):
-                movement = V2((ex-sx) * x / float(steps), (ey-sy) * x / float(steps))
-                engine.render_sprite(self.dirtpaths, self.parent.pos + V2(sx, sy) + movement)
-
+                movement = V2(
+                    (ex - sx) * x / float(steps), (ey - sy) * x / float(steps)
+                )
+                engine.render_sprite(
+                    self.dirtpaths, self.parent.pos + V2(sx, sy) + movement
+                )

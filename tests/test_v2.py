@@ -3,14 +3,16 @@ import math
 
 from pessimal.v2 import V2
 
+
 def test_v2_parse():
-    assert V2.parse("1,2") == V2(1,2)
-    assert V2.parse(None) == V2(0,0)
+    assert V2.parse("1,2") == V2(1, 2)
+    assert V2.parse(None) == V2(0, 0)
     try:
         V2.parse("abc")
         assert False
     except ValueError:
         pass
+
 
 def test_v2_class():
     zero = V2(0, 0)
@@ -22,7 +24,7 @@ def test_v2_class():
     one_two = V2(1, 2)
     assert one_two.x == 1.0
     assert one_two.y == 2.0
-    
+
     # arithmetic
     assert V2(1, 2) + V2(3, 0) == V2(4, 2)
     assert V2(4, 3) - V2(1, 2) == V2(3, 1)

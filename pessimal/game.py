@@ -11,31 +11,36 @@ from enum import Enum
 BG_COLOUR = (40, 40, 40)
 
 STATUS_MAP = {
-        SystemStatus.EDITING: (40, 175, 200),
-        SystemStatus.RUNNING: (100, 200, 40),
-        SystemStatus.PAUSED: (220, 70, 60),
-            }
+    SystemStatus.EDITING: (40, 175, 200),
+    SystemStatus.RUNNING: (100, 200, 40),
+    SystemStatus.PAUSED: (220, 70, 60),
+}
 FG_STATUS = (200, 40, 40)
 
 
-
 class Game(EngineDependent):
-    def __init__(self, engine):
+    def __init__(self, engine, *, config: dict = None):
         super().__init__(engine)
         self.status = engine.status
         self.time_step = 0.01
         self.time_accum = 0.0
+        self.config = config or {}
+        self.last_loaded_world = None
         self.init_game()
+
+    def get_starting_world(self):
+        return self.config.get("start_world", "data/setup.yaml")
 
     def init_game(self):
         self.world = World()
         self.input = InputManager()
 
         self.scale = 1.0
-        self.pos = V2(0,0)
+        self.pos = V2(0, 0)
 
+        self.last_loaded_world = self.get_starting_world()
         print("Loading setup...")
-        with open("data/setup.yaml") as yaml_fh:
+        with open(self.last_loaded_world) as yaml_fh:
             setup_data = yaml.safe_load(yaml_fh)
 
         for entity in setup_data.get("entities", []):
@@ -43,13 +48,12 @@ class Game(EngineDependent):
 
     def save_config(self):
         print("Serialising...")
-        config = {"entities":[]}
+        config = {"entities": []}
         self.world.save_out(config)
         print("Writing setup...")
-        with open("data/setup.yaml", "wt") as yaml_fh:
+        with open(self.last_loaded_world, "wt") as yaml_fh:
             yaml.dump(config, yaml_fh)
         pass
-        
 
     def start(self):
         self.world.start()
@@ -95,8 +99,7 @@ class Game(EngineDependent):
         mx, my = pygame.mouse.get_pos()
         wx, wy = engine.get_window_pos()
         status_text = status_text + f"M: {mx}, {my} @ {wx}, {wy}"
-        status_text = status_text + f" FPS: {engine.clock.get_fps():.1f}"
+        status_text = status_text + f" FPS: {engine.get_fps():.1f}"
 
         engine.render_ui_text(status_text, (14, 2))
         self.world.render(engine)
-

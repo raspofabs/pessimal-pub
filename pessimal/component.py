@@ -71,4 +71,3 @@ class Component:
 
     def render(self, engine):
         pass
-

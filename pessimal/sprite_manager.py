@@ -34,15 +34,16 @@ class SpriteManager:
 
                 px = lx * (tilesize_x + padding)
                 py = ly * (tilesize_y + padding)
-                self.defined_spritesheets[name][spritename] = sprite_sheet.image_at((px, py, tilesize_x, tilesize_y))
-
+                self.defined_spritesheets[name][spritename] = sprite_sheet.image_at(
+                    (px, py, tilesize_x, tilesize_y)
+                )
 
     @classmethod
     def get_manager(cls):
         if cls.default_manager is None:
             cls.default_manager = cls()
         return cls.default_manager
-    
+
     def get_sprite_or_none(self, sprite_id):
         if sprite_id is None:
             return None
@@ -56,12 +57,14 @@ class SpriteManager:
         if sheetname not in self.sprite_sheets:
             return None
         sheet = self.defined_spritesheets.get(sheetname, {})
-        #assert sheet is not None, f"Sheet is None: {sheetname} : {spritename}"
+        # assert sheet is not None, f"Sheet is None: {sheetname} : {spritename}"
         sprite = sheet.get(spritename)
         if sprite is None:
             try:
                 x, y = literal_eval(spritename)
-                sprite_sheet, tilesize_x, tilesize_y, padding = self.sprite_sheets[sheetname]
+                sprite_sheet, tilesize_x, tilesize_y, padding = self.sprite_sheets[
+                    sheetname
+                ]
                 px = x * (tilesize_x + padding)
                 py = y * (tilesize_y + padding)
                 sprite = sprite_sheet.image_at((px, py, tilesize_x, tilesize_y))
